@@ -1,42 +1,44 @@
 import { useState, useEffect } from 'react';
-import data from './dataset.json'; // Replace with your dataset file
-import Pagination from './Pagination';
+import data from './dataset.json';  
+import Pagination from './components/Pagination';
+import { useItems } from './components/ItemsProvider';
 
 function App() {
-  const [items, setItems] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(50);
   const [searchQuery, setSearchQuery] = useState('');
+  const { items, setItems } = useItems();
 
-  // Calculate pagination
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = items.slice(startIndex, endIndex);
+  useEffect(() => {
+    setItems(data);
+  }, [setItems]);
 
-  // Handle search with debounce
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const filteredItems = data.filter(item => 
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setItems(filteredItems);
-    }, 500); // Adjust debounce delay as needed
+    }, 500);  
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [searchQuery, setItems]);
 
-  // Handle page change
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = items.slice(startIndex, endIndex);
+
+  const loadMore = () => {
+    setCurrentPage(prevPage => prevPage + 1);
   };
 
   return (
     <div>
       <input 
         type="text" 
+        placeholder="Search" 
         value={searchQuery} 
         onChange={(e) => setSearchQuery(e.target.value)} 
-        placeholder="Search..."
       />
       <ul>
         {currentItems.map(item => (
@@ -45,9 +47,10 @@ function App() {
       </ul>
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(items.length / itemsPerPage)}
-        onPageChange={handlePageChange}
+        pages={Math.ceil(items.length / itemsPerPage)}
+        pageChange={setCurrentPage}
       />
+      <button onClick={loadMore}>Load More</button>
     </div>
   );
 }
