@@ -1,8 +1,26 @@
-# React + Vite
+# Advanced State Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Manual Installation
 
-Currently, two official plugins are available:
+If you would still prefer to do the installation manually, follow these steps:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Clone the repo:
+
+```bash
+git clone https://github.com/ruhit07/advanced-state-management.git
+cd advanced-state-management
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+## Commands
+
+Running locally:
+
+```bash
+npm run dev
+```
